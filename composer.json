@@ -15,6 +15,7 @@
         "symfony/framework-bundle": "5.4.*",
         "symfony/http-foundation": "5.4.*",
         "symfony/runtime": "5.4.*",
+        "symfony/twig-bundle": "5.4.*",
         "symfony/yaml": "5.4.*",
         "twig/intl-extra": "^3.5"
     },
