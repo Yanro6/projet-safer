@@ -2,11 +2,62 @@
 {% extends 'base.html.twig' %}
 
 {# Titre de la page #}
-{% block title %}Accueil Agence Alpha {% endblock %}
+{% block title %} Accueil Agence Alpha {% endblock %}
+
+{# Css de la page #}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/lumen/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+{% endblock %}
 
 
 {# Codes HTML et balises Twig #}
 {% block body %}
-<h1>Accueil</p>
+<div class="container">
+    <h1>Accueil</h1>
 
+    <i class="fas fa-check"></i>
+    
+    <div class="row">
+    {% for i in 0..2 %}
+        <div class="col">
+            <div class="card">
+                <img src="https://picsum.photos/200/400" class="img-fluid" alt="" />
+                <div class="card-body">
+                    <h4 class="card-title">Magnifique maison</h4>
+                    <p class="card-text">description du bien</p>
+                    <a href="#" class="btn btn-primary btn-sn">Détails</a>
+                    <a href="#" class="btn btn-success btn-sn">Ajouter</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    <hr></hr>
+
+    <h2>Votre agence de proximité</h2>
+    <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porttitor maximus felis nec convallis. Sed lacus erat, suscipit vitae velit et, pretium fringilla est. Phasellus commodo placerat odio, non feugiat mauris luctus ut. Mauris ut enim ante. Proin volutpat ut eros at porttitor. Nullam vitae sapien et sem aliquet feugiat at sed libero. Sed tincidunt lobortis nunc. Cras eleifend ultrices justo, a dictum ex volutpat a. Ut elit nisl, lobortis eu faucibus eu, varius sed eros. Proin in metus efficitur, fermentum magna non, egestas erat.
+
+    Aliquam sem mi, scelerisque eu sem fringilla, mollis finibus ante. Sed nec enim posuere, aliquet mauris id, molestie risus. Proin gravida orci non felis sagittis, ac accumsan tortor ullamcorper. Suspendisse non magna et nisi iaculis maximus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse semper, odio ac tincidunt malesuada, sapien orci dignissim nulla, non ultrices lorem leo a sem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam blandit euismod enim, id congue sem vehicula a. Donec quis bibendum dui.
+    </p>
+
+    <hr></hr>
+
+    <div class="row">
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-solid fa-magnifying-glass', 'text': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porttitor maximus felis nec convallis. Sed lacus erat, suscipit vitae velit et, pretium fringilla est. Phasellus commodo placerat odio, non feugiat mauris luctus ut. Mauris ut enim ante. Proin volutpat ut eros at porttitor. Nullam vitae sapien et sem aliquet feugiat at sed libero. Sed tincidunt lobortis nunc. Cras eleifend ultrices justo, a dictum ex volutpat a. Ut elit nisl, lobortis eu faucibus eu, varius sed eros. Proin in metus efficitur, fermentum magna non, egestas erat.' } %}
+    </div>
+
+    <hr></hr>
+
+    <div class="row">
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-solid fa-location-dot', 'text': 'Proximité' } %}
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-regular fa-lightbulb', 'text': 'Conseil' } %}
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-solid fa-signs-post', 'text': 'Choix' } %}
+    </div>
+
+    <hr></hr>
+
+</div>
 {% endblock %}
