@@ -7,6 +7,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
+# constante des differentes categories
+define("TERRAINAGRICOLE",     "terrain agricole");
+define("PRAIRIE",     "prairie");
+define("BOIS",     "bois");
+define("BATIMENTS",     "batiments");
+define("EXPLOITATIONS",     "exploitations");
+
+
 /**
  * @ORM\Entity(repositoryClass=CategorieRepository::class)
  */
@@ -20,105 +29,19 @@ class Categorie
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $terrainAgricole;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $prairie;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $bois;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $batiment;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $exploitations;
-
-    /**
      * @ORM\OneToMany(targetEntity=Bien::class, mappedBy="categorie")
      */
     private $biens;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nom;
 
     public function __construct()
     {
         $this->biens = new ArrayCollection();
     }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function isTerrainAgricole(): ?bool
-    {
-        return $this->terrainAgricole;
-    }
-
-    public function setTerrainAgricole(bool $terrainAgricole): self
-    {
-        $this->terrainAgricole = $terrainAgricole;
-
-        return $this;
-    }
-
-    public function isPrairie(): ?bool
-    {
-        return $this->prairie;
-    }
-
-    public function setPrairie(bool $prairie): self
-    {
-        $this->prairie = $prairie;
-
-        return $this;
-    }
-
-    public function isBois(): ?bool
-    {
-        return $this->bois;
-    }
-
-    public function setBois(bool $bois): self
-    {
-        $this->bois = $bois;
-
-        return $this;
-    }
-
-    public function isBatiment(): ?bool
-    {
-        return $this->batiment;
-    }
-
-    public function setBatiment(bool $batiment): self
-    {
-        $this->batiment = $batiment;
-
-        return $this;
-    }
-
-    public function isExploitations(): ?bool
-    {
-        return $this->exploitations;
-    }
-
-    public function setExploitations(bool $exploitations): self
-    {
-        $this->exploitations = $exploitations;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Bien>
      */
@@ -145,6 +68,18 @@ class Categorie
                 $bien->setCategorie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(?string $nom): self
+    {
+        $this->nom = $nom;
 
         return $this;
     }
