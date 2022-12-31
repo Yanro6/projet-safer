@@ -31,13 +31,34 @@ class AccueilController extends AbstractController{
     *@Route("/accueil2", name="accueil")
     */
     public function accueil2(EntityManagerInterface $em){
-        $bien=new Bien();
+
+        # créer entité
+        $bien = new Bien();
         $bien->setTitre("bien_2")
             ->setCp(35000)
             ->setPrix(6600);
         $em->persist($bien);
-        $em->flush();
-        dd("done");
+        $em->flush(); #flush peut être associé à plusieurs persist. Permettant de répercuter plusieurs mises à jour de la BDD en une seule fois.
+        $titre = $bien->getTitre();
+        echo("entity $titre created,\n");
+
+        # récupérer entité
+        $br=$em->getRepository(Bien::class);
+        $br->find(2);
+        echo ("id 2 got,\n");
+
+        # modifier entité
+        $bm = $em->getRepository(Bien::class)->findBy(['titre'=>'bien_2'])[0];
+        $bm->setCp(72000);
+        $em->flush(); #flush peut être associé à plusieurs persist. Permettant de répercuter plusieurs mises à jour de la BDD en une seule fois.
+        echo("entity $titre modified,\n");
+
+        # supprimer entité
+        $br = $em->getRepository(Bien::class)->findBy(['titre'=>'bien_2'])[0];
+        $em->remove($br);
+        $em->flush(); #flush peut être associé à plusieurs persist. Permettant de répercuter plusieurs mises à jour de la BDD en une seule fois.
+        echo("entity $titre removed\n");
+
         return $this->render('home.html.twig');
     }
     
