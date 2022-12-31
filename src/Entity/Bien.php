@@ -37,6 +37,11 @@ class Bien
      */
     private $cp;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="biens")
+     */
+    private $categorie;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Bien
     public function setCp(?int $cp): self
     {
         $this->cp = $cp;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }
