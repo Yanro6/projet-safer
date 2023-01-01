@@ -42,6 +42,21 @@ class Bien
      */
     private $categorie;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $surface;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $localisation;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $description;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +118,42 @@ class Bien
     public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getSurface(): ?int
+    {
+        return $this->surface;
+    }
+
+    public function setSurface(?int $surface): self
+    {
+        $this->surface = $surface;
+
+        return $this;
+    }
+
+    public function getLocalisation(): ?string
+    {
+        return $this->localisation;
+    }
+
+    public function setLocalisation(?string $localisation): self
+    {
+        $this->localisation = $localisation;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
