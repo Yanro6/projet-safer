@@ -17,12 +17,44 @@
     <h1>Accueil</h1>
 
     <i class="fas fa-check"></i>
-    
+
+    <h2>Votre agence de proximité</h2>
+
+    <hr>
+    </hr>
+
     <div class="row">
-    {% for i in 0..2 %}
+        {% include 'shared/_presentation.html.twig' with {
+            'color': 'white',
+            'icon': 'fa-solid fa-magnifying-glass',
+            'text': "La Société d'aménagement foncier et d'établissement rural (Safer) permet à tout porteur de projet viable - qu'il soit agricole, artisanal, de service, résidentiel ou environnemental - de s'installer en milieu rural.
+        "} %}
+    </div>
+        <hr>
+        </hr>
+    <div class="row">
+        <p>
+            Ce site propose donc un certain nombre de biens agricoles à la vente ou à la location à l'intention des
+            porteurs de projets.
+
+            Les biens proposés sont donc à la vente ou à la location. Ils possèdent une surface exprimée en m2 et une
+            catégorie. Chaque bien possède un prix (vente prix final, dans le location, le prix mensuel) exprimés en
+            euros, et une localisation (ville et codepostal). Chaque bien possède également un numéro, un titre, ainsi
+            qu'un descriptif.
+
+            Les catégories sont les suivantes : Terrain agricole, prairie, Bois, Bâtiments, Exploitations. Chaque
+            catégorie peut référencer plusieurs biens.
+        </p>
+    </div>
+
+    <hr>
+    </hr>
+
+    <div class="row">
+        {% for i in 0..2 %}
         <div class="col">
             <div class="card">
-                <img src="https://picsum.photos/200/400" class="img-fluid" alt="" />
+                <img src="https://picsum.photos/200/300" class="img-fluid" alt="" />
                 <div class="card-body">
                     <h4 class="card-title">Magnifique maison</h4>
                     <p class="card-text">description du bien</p>
@@ -31,25 +63,11 @@
                 </div>
             </div>
         </div>
-    {% endfor %}
+        {% endfor %}
     </div>
 
-    <hr></hr>
-
-    <h2>Votre agence de proximité</h2>
-    <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porttitor maximus felis nec convallis. Sed lacus erat, suscipit vitae velit et, pretium fringilla est. Phasellus commodo placerat odio, non feugiat mauris luctus ut. Mauris ut enim ante. Proin volutpat ut eros at porttitor. Nullam vitae sapien et sem aliquet feugiat at sed libero. Sed tincidunt lobortis nunc. Cras eleifend ultrices justo, a dictum ex volutpat a. Ut elit nisl, lobortis eu faucibus eu, varius sed eros. Proin in metus efficitur, fermentum magna non, egestas erat.
-
-    Aliquam sem mi, scelerisque eu sem fringilla, mollis finibus ante. Sed nec enim posuere, aliquet mauris id, molestie risus. Proin gravida orci non felis sagittis, ac accumsan tortor ullamcorper. Suspendisse non magna et nisi iaculis maximus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse semper, odio ac tincidunt malesuada, sapien orci dignissim nulla, non ultrices lorem leo a sem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam blandit euismod enim, id congue sem vehicula a. Donec quis bibendum dui.
-    </p>
-
-    <hr></hr>
-
-    <div class="row">
-        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-solid fa-magnifying-glass', 'text': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porttitor maximus felis nec convallis. Sed lacus erat, suscipit vitae velit et, pretium fringilla est. Phasellus commodo placerat odio, non feugiat mauris luctus ut. Mauris ut enim ante. Proin volutpat ut eros at porttitor. Nullam vitae sapien et sem aliquet feugiat at sed libero. Sed tincidunt lobortis nunc. Cras eleifend ultrices justo, a dictum ex volutpat a. Ut elit nisl, lobortis eu faucibus eu, varius sed eros. Proin in metus efficitur, fermentum magna non, egestas erat.' } %}
-    </div>
-
-    <hr></hr>
+    <hr>
+    </hr>
 
     <div class="row">
         {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-solid fa-location-dot', 'text': 'Proximité' } %}
@@ -57,7 +75,8 @@
         {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-solid fa-signs-post', 'text': 'Choix' } %}
     </div>
 
-    <hr></hr>
+    <hr>
+    </hr>
 
 </div>
 {% endblock %}

@@ -1,0 +1,54 @@
+{# Template général de la page #}
+{% extends 'base.html.twig' %}
+
+{# Titre de la page #}
+{% block title %} Statistique Agence Alpha {% endblock %}
+
+{# Css de la page #}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/lumen/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+{% endblock %}
+
+
+{# Codes HTML et balises Twig #}
+{% block body %}
+<div class="container">
+
+    <h1>Statistique</h1>
+    {% include 'shared/_presentation.html.twig' with {
+            'color': 'white',
+            'icon': 'fa-solid fa-chart-simple',
+            'text': '' } %}
+    <hr></hr>
+
+    <h2>Catégorie de bien préféré :</h2>
+    {% for nomCat, cat in catBienFav %}
+            <li>
+                La catégorie <b> {{ nomCat }} </b> à été mise en favorite <b> {{ cat }} </b> fois.
+            </li>
+    {% endfor %}
+    <hr></hr>
+
+    <h2>Bien préféré par département :</h2>
+    {% for numDept, b in deptBienFav %}
+        <li>Le département <b> {{ numDept }} </b> possède :
+            {% for titreB, nbB in b %}
+                <ul>
+                    Le bien <b> {{ titreB }} </b> à été mise en favorite <b> {{ nbB }} </b> fois.
+                </ul>
+            {% endfor %}
+        </li>
+    {% endfor %}
+    <hr></hr>
+
+    <div class="row">
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-solid fa-location-dot', 'text': 'Proximité' } %}
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-regular fa-lightbulb', 'text': 'Conseil' } %}
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-solid fa-signs-post', 'text': 'Choix' } %}
+    </div>
+
+    <hr></hr>
+
+</div>
+{% endblock %}

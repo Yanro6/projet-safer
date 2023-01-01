@@ -28,6 +28,7 @@ class Categorie
      */
     private $id;
 
+    # Biens référencé par la Catégorie
     /**
      * @ORM\OneToMany(targetEntity=Bien::class, mappedBy="categorie")
      */
@@ -42,6 +43,7 @@ class Categorie
     {
         $this->biens = new ArrayCollection();
     }
+    
     /**
      * @return Collection<int, Bien>
      */

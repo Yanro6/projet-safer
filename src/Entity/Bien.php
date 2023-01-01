@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BienRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,6 +39,7 @@ class Bien
      */
     private $cp;
 
+    # Categorie référencé par le Bien
     /**
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="biens")
      */
@@ -56,6 +59,16 @@ class Bien
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Porteur::class, mappedBy="biens")
+     */
+    private $porteurs;
+
+    public function __construct()
+    {
+        $this->porteurs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -154,6 +167,33 @@ class Bien
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Porteur>
+     */
+    public function getPorteurs(): Collection
+    {
+        return $this->porteurs;
+    }
+
+    public function addPorteur(Porteur $porteur): self
+    {
+        if (!$this->porteurs->contains($porteur)) {
+            $this->porteurs[] = $porteur;
+            $porteur->addBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removePorteur(Porteur $porteur): self
+    {
+        if ($this->porteurs->removeElement($porteur)) {
+            $porteur->removeBien($this);
+        }
 
         return $this;
     }
