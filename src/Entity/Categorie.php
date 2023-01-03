@@ -21,6 +21,17 @@ const EXPLOITATIONS = "exploitations";
  */
 class Categorie
 {
+
+    public function getCategories(){
+        return array(
+             TERRAINAGRICOLE => "terrain agricole",
+             PRAIRIE => "prairie",
+             BOIS => "bois",
+             BATIMENTS => "batiments",
+             EXPLOITATIONS => "exploitations"
+        );
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

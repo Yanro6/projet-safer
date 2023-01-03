@@ -8,10 +8,12 @@ use App\Repository\BienRepository;
 use App\Repository\PorteurRepository;
 use Proxies\__CG__\App\Entity\Categorie;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Forms;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AccueilController extends AbstractController{
+
     /**
     *@Route("/accueil", name="accueil")
     */
