@@ -9,11 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 # constante des differentes categories
-define("TERRAINAGRICOLE",     "terrain agricole");
-define("PRAIRIE",     "prairie");
-define("BOIS",     "bois");
-define("BATIMENTS",     "batiments");
-define("EXPLOITATIONS",     "exploitations");
+const TERRAINAGRICOLE = "terrain agricole";
+const PRAIRIE = "prairie";
+const BOIS = "bois";
+const BATIMENTS = "batiments";
+const EXPLOITATIONS = "exploitations";
 
 
 /**

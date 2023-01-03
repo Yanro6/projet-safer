@@ -45,7 +45,7 @@ class StatsController extends AbstractController{
                     $deptBienFav[$dept] = $biensFav; // ajout du departement dans le tableau
                 }else{
                     if (!array_key_exists($t, $deptBienFav[$dept])) {
-                        $deptBienFav[$dept] = array($t => 1); // liste du nombre de fois que le bien apparrait dans un département
+                        $deptBienFav[$dept][$t] = 1; // liste du nombre de fois que le bien apparrait dans un département
                     }else{
                         $deptBienFav[$dept][$t]++; // increment du nombre dans le tableau
                     }
