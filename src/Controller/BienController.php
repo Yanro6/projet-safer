@@ -12,6 +12,7 @@ use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -21,6 +22,10 @@ class BienController extends AbstractController{
     */
     public function add(FormFactoryInterface $factory, CategorieRepository $cr)
     {
+        $categorie = array();
+        foreach($cr as $c){
+            $categorie = $c->getNom();
+        }
 
         $builder =$factory->createBuilder();
         $builder
@@ -28,11 +33,7 @@ class BienController extends AbstractController{
             ->setAction('/index')
             ->add('name', TextType::class, ['label' => 'Titre du bien ', 'attr' => ['class' => 'formcontrol', 'placeholder' => 'Tapez un titre pour ce bien']])
             ->add('prix', 	IntegerType::class, ['label' => 'Prix du bien ', 'attr' => ['class' => 'formcontrol', 'placeholder' => 'Tapez un prix pour ce bien']])
-            ->add('categorie', ChoiceType::class, ['label' => 'Catégorie du bien ', 
-                'choice_loader' => new CallbackChoiceLoader(function () {
-                    return Categorie::getCategories();
-                })
-            ])
+            ->add('categorie', EntityType::class, ['class' => Categorie::Class, 'choice_label' => 'nom'])
             ->add('submit', SubmitType::class, ['label'=>'Créer le bien']);
 
 
