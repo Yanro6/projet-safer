@@ -20,8 +20,24 @@
 
     <hr>
     </hr>
-    
-    {{form(formView)}}
+ {% form_theme formView 'bootstrap_4_layout.html.twig' %}
+
+    <div class="row">
+        <div class="col">
+            {{form_row(formView.nom)}}
+            {{form_row(formView.prix)}}
+            {{form_row(formView.cp)}}
+            {{form_row(formView.categorie)}}
+            {{form_row(formView.description)}}
+        </div>
+        <div class="col">
+            {{form_row(formView.url)}}
+            {{form_row(formView.surface)}}
+            {{form_row(formView.localisation)}}
+            <p style="color:red;">Les champ suivis d'un astérisque (*) doivent obligatoirement être remplis</p>
+            {{form_row(formView.submit)}}
+        </div>
+    </div>
 
     <hr>
     </hr>
