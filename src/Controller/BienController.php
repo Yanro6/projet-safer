@@ -5,9 +5,8 @@ namespace App\Controller;
 use App\Repository\CategorieRepository;
 use App\Entity\Categorie;
 use App\Entity\Bien;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\Form\FormType;
-use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,8 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\choiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class BienController extends AbstractController{
@@ -33,16 +31,10 @@ class BienController extends AbstractController{
     /**
     *@Route("/agence/bien/add", name="add")
     */
-    public function add(Request $request, FormFactoryInterface $factory, CategorieRepository $cr): Response
+    public function add(EntityManagerInterface $em, Request $request, FormFactoryInterface $factory, CategorieRepository $cr): Response
     {
-        /* DEPRECATED
-        $categorie = array();
-        foreach($cr->findAll() as $c){
-            $categorie[] = $c->getNom();
-        }
-        */
         
-        $builder=$factory->createBuilder();
+        $builder=$factory->createBuilder(FormType::class, null, ['data_class' => Bien::class] );
         $builder->setMethod('GET');
 
         $form=$builder->getForm();
@@ -64,7 +56,7 @@ class BienController extends AbstractController{
 
         if ($form->isSubmitted()){
             $data = $form->getData();
-            dump($data);
+            
             $b->setTitre($data['titre']);
             $b->setPrix($data['prix']);
             $b->setCp($data['cp']);
@@ -74,12 +66,62 @@ class BienController extends AbstractController{
             $b->setLocalisation($data['localisation']);
             $b->setDescription($data['description']);
 
-            dump($b);
-        }else{
-            dump("pas envoyé");
+            $em->persist($b);
+
+            $em->flush(); #flush peut être associé à plusieurs persist. Permettant de répercuter plusieurs mises à jour de la BDD en une seule fois.
+
         }
 
         return $this->render('bien/add.html.twig', [ 'formView'=>$formView ]);
+        
+    }
+
+
+    /**
+    *@Route("/agence/bien/modify", name="modify")
+    */
+    public function modify(EntityManagerInterface $em, Request $request, FormFactoryInterface $factory, CategorieRepository $cr): Response
+    {
+        
+        $b = $em->getRepository(Bien::class)->findBy(['titre'=>'bien4'])[0]; //modify
+
+        $builder=$factory->createBuilder(FormType::class, null, ['data_class' => Bien::class] );
+        $builder->setMethod('GET');
+
+        $form=$builder->getForm();
+        $form->add('titre', TextType::class, ['required' => true, 'label' => 'Titre du bien *', 'attr' => ['class' => 'formcontrol', 'value' => $b->getTitre()]])
+            ->add('prix', IntegerType::class, ['required' => true, 'label' => 'Prix du bien en euro (€) *', 'attr' => ['class' => 'formcontrol', 'value' => $b->getPrix()]])
+            ->add('cp', IntegerType::class, ['required' => true, 'label' => 'Code postal du bien *', 'attr' => ['class' => 'formcontrol', 'value' => $b->getCp()]])
+            ->add('categorie', EntityType::class, ['required' => true, 'label' => 'Catégorie du bien *', 'class' => Categorie::class, 'choice_label' => 'nom', 'data' => $b->getCategorie() ])
+            ->add('surface', IntegerType::class, ['required' => false, 'label' => 'Surface en km² du bien ', 'attr' => ['class' => 'formcontrol', 'value' => $b->getSurface()]])
+            ->add('url', TextType::class, ['required' => false, 'label' => 'Url du bien ', 'attr' => ['class' => 'formcontrol', 'value' => $b->getUrl()]])
+            ->add('localisation', TextAreaType::class, ['required' => false, 'label' => 'Localisation du bien ', 'attr' => ['class' => 'formcontrol', 'value' => $b->getLocalisation()]])
+            ->add('description', TextAreaType::class, ['required' => false, 'label' => 'Description du bien ', 'attr' => ['class' => 'formcontrol', 'value' => $b->getDescription()]])
+            ;
+
+        $formView=$form->createView();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()){
+            $data = $form->getData();
+            
+            $b->setTitre($data['titre']);
+            $b->setPrix($data['prix']);
+            $b->setCp($data['cp']);
+            $b->setCategorie($data['categorie']);
+            $b->setSurface($data['surface']);
+            $b->setUrl($data['url']);
+            $b->setLocalisation($data['localisation']);
+            $b->setDescription($data['description']);
+
+            $em->persist($b);
+
+            $em->flush(); #flush peut être associé à plusieurs persist. Permettant de répercuter plusieurs mises à jour de la BDD en une seule fois.
+
+        }
+
+        return $this->render('bien/modify.html.twig', [ 'formView'=>$formView ]);
         
     }
 
