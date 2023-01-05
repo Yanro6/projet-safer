@@ -6,6 +6,7 @@ use App\Repository\CategorieRepository;
 use App\Entity\Categorie;
 use App\Entity\Bien;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,7 @@ class BienController extends AbstractController{
     }
 
     /**
-    *@Route("/agence/bien/add", name="add")
+    *@Route("/bien/add", name="add")
     */
     public function add(EntityManagerInterface $em, Request $request, FormFactoryInterface $factory, CategorieRepository $cr): Response
     {
@@ -56,15 +57,14 @@ class BienController extends AbstractController{
 
         if ($form->isSubmitted()){
             $data = $form->getData();
-            
-            $b->setTitre($data['titre']);
-            $b->setPrix($data['prix']);
-            $b->setCp($data['cp']);
-            $b->setCategorie($data['categorie']);
-            $b->setSurface($data['surface']);
-            $b->setUrl($data['url']);
-            $b->setLocalisation($data['localisation']);
-            $b->setDescription($data['description']);
+            $b->setTitre($data->getTitre());
+            $b->setPrix($data->getPrix());
+            $b->setCp($data->getCp());
+            $b->setCategorie($data->getCategorie());
+            $b->setSurface($data->getSurface());
+            $b->setUrl($data->getUrl());
+            $b->setLocalisation($data->getLocalisation());
+            $b->setDescription($data->getDescription());
 
             $em->persist($b);
 
@@ -78,12 +78,12 @@ class BienController extends AbstractController{
 
 
     /**
-    *@Route("/agence/bien/modify", name="modify")
+    *@Route("/bien/modif/{id}", name="modif", methods={"GET", "POST"})
     */
-    public function modify(EntityManagerInterface $em, Request $request, FormFactoryInterface $factory, CategorieRepository $cr): Response
+    public function modif($id, EntityManagerInterface $em, Request $request, FormFactoryInterface $factory, CategorieRepository $cr): Response
     {
         
-        $b = $em->getRepository(Bien::class)->findBy(['titre'=>'bien4'])[0]; //modify
+        $b = $em->getRepository(Bien::class)->find($id);
 
         $builder=$factory->createBuilder(FormType::class, null, ['data_class' => Bien::class] );
         $builder->setMethod('GET');
@@ -105,15 +105,16 @@ class BienController extends AbstractController{
 
         if ($form->isSubmitted()){
             $data = $form->getData();
-            
-            $b->setTitre($data['titre']);
-            $b->setPrix($data['prix']);
-            $b->setCp($data['cp']);
-            $b->setCategorie($data['categorie']);
-            $b->setSurface($data['surface']);
-            $b->setUrl($data['url']);
-            $b->setLocalisation($data['localisation']);
-            $b->setDescription($data['description']);
+
+            $b->setTitre($data['titre'])
+                ->setPrix($data['prix'])
+                ->setCp($data['cp'])
+                ->setCategorie($data['categorie'])
+                ->setSurface($data['surface'])
+                ->setUrl($data['url'])
+                ->setLocalisation($data['localisation'])
+                ->setDescription($data['description'])
+            ;
 
             $em->persist($b);
 
@@ -121,8 +122,23 @@ class BienController extends AbstractController{
 
         }
 
-        return $this->render('bien/modify.html.twig', [ 'formView'=>$formView ]);
+        return $this->render('bien/modif.html.twig', [ 'formView'=>$formView ]);
         
+    }
+
+    /**
+    *@Route("/bien/suppr/{id}", name="suppr", methods={"GET", "POST"})
+    */
+    public function suppr($id, EntityManagerInterface $em){
+        $b = $em->getRepository(Bien::class)->find($id);
+        if($b == null){
+            throw new Exception("Bien non présent dans la base");
+        }
+        $titreBien = $b->getTitre();
+        $em->remove($b);
+        $em->flush(); #flush peut être associé à plusieurs persist. Permettant de répercuter plusieurs mises à jour de la BDD en une seule fois.
+
+        return $this->render('bien/suppr.html.twig', [ 'titreBien'=>$titreBien ]);
     }
 
 }

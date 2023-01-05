@@ -1,0 +1,43 @@
+{# Template général de la page #}
+{% extends 'base.html.twig' %}
+
+{# Titre de la page #}
+{% block title %} Suppr Bien Agence Alpha {% endblock %}
+
+{# Css de la page #}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/lumen/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+{% endblock %}
+
+
+{# Codes HTML et balises Twig #}
+{% block body %}
+<div class="container">
+    <h1>Bien</h1>
+
+    <h2>Supprimer un bien</h2>
+
+    <hr>
+    </hr>
+
+    <div class="row">
+        <div class="col">
+            <p>Le bien {{titreBien}} a été supprimé.</p>
+        </div>
+    </div>
+
+    <hr>
+    </hr>
+
+    <div class="row">
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-solid fa-location-dot', 'text': 'Proximité' } %}
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-regular fa-lightbulb', 'text': 'Conseil' } %}
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-solid fa-signs-post', 'text': 'Choix' } %}
+    </div>
+
+    <hr>
+    </hr>
+
+</div>
+{% endblock %}
