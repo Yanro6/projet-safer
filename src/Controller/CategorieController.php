@@ -21,7 +21,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 class CategorieController extends AbstractController{
 
     /**
-    *@Route("/categorie/add", name="add")
+    *@Route("/categorie/add", name="addCategorie")
     */
     public function add(EntityManagerInterface $em, Request $request, FormFactoryInterface $factory, CategorieRepository $cr): Response
     {
@@ -54,7 +54,7 @@ class CategorieController extends AbstractController{
 
 
     /**
-    *@Route("/categorie/modif/{id}", name="modif", methods={"GET", "POST"})
+    *@Route("/categorie/modif/{id}", name="modifCategorie", methods={"GET", "POST"})
     */
     public function modify($id, EntityManagerInterface $em, Request $request, FormFactoryInterface $factory, CategorieRepository $cr): Response
     {
@@ -86,7 +86,7 @@ class CategorieController extends AbstractController{
     }
 
     /**
-    *@Route("/categorie/suppr/{id}", name="suppr", methods={"GET", "POST"})
+    *@Route("/categorie/suppr/{id}", name="supprCategorie", methods={"GET", "POST"})
     */
     public function suppr($id, EntityManagerInterface $em){
         $c = $em->getRepository(Categorie::class)->find($id);

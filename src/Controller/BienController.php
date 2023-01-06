@@ -20,17 +20,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class BienController extends AbstractController{
 
-
     /**
-    *@Route("/agence/bien/test", name="test")
-    */
-    public function test(){
-        dump('oui');
-        return $this->render('index.html.twig');
-    }
-
-    /**
-    *@Route("/bien/add", name="add")
+    *@Route("/bien/add", name="addBien")
     */
     public function add(EntityManagerInterface $em, Request $request, FormFactoryInterface $factory, CategorieRepository $cr): Response
     {
@@ -55,7 +46,7 @@ class BienController extends AbstractController{
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()){
+        if ($form->isSubmitted() && $form->isValid()){
             $data = $form->getData();
             $b->setTitre($data->getTitre());
             $b->setPrix($data->getPrix());
@@ -78,7 +69,7 @@ class BienController extends AbstractController{
 
 
     /**
-    *@Route("/bien/modif/{id}", name="modif", methods={"GET", "POST"})
+    *@Route("/bien/modif/{id}", name="modifBien", methods={"GET", "POST"})
     */
     public function modif($id, EntityManagerInterface $em, Request $request, FormFactoryInterface $factory, CategorieRepository $cr): Response
     {
@@ -106,14 +97,14 @@ class BienController extends AbstractController{
         if ($form->isSubmitted()){
             $data = $form->getData();
 
-            $b->setTitre($data['titre'])
-                ->setPrix($data['prix'])
-                ->setCp($data['cp'])
-                ->setCategorie($data['categorie'])
-                ->setSurface($data['surface'])
-                ->setUrl($data['url'])
-                ->setLocalisation($data['localisation'])
-                ->setDescription($data['description'])
+            $b->setTitre($data->getTitre());
+            $b->setPrix($data->getPrix());
+            $b->setCp($data->getCp());
+            $b->setCategorie($data->getCategorie());
+            $b->setSurface($data->getSurface());
+            $b->setUrl($data->getUrl());
+            $b->setLocalisation($data->getLocalisation());
+            $b->setDescription($data->getDescription());
             ;
 
             $em->persist($b);
@@ -127,7 +118,7 @@ class BienController extends AbstractController{
     }
 
     /**
-    *@Route("/bien/suppr/{id}", name="suppr", methods={"GET", "POST"})
+    *@Route("/bien/suppr/{id}", name="supprBien", methods={"GET", "POST"})
     */
     public function suppr($id, EntityManagerInterface $em){
         $b = $em->getRepository(Bien::class)->find($id);
