@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {# Titre de la page #}
-{% block title %} Accueil Agence Alpha {% endblock %}
+{% block title %} Categories Agence Alpha {% endblock %}
 
 {# Css de la page #}
 {% block stylesheets %}
@@ -15,19 +15,34 @@
 {% block body %}
 <div class="container">
     <div class"=row">
-        <div class="col">
-            <a href="/login" class="btn btn-primary btn-sn" style="margin-top:10px;">Log in</a>
-            <a href="/signin" class="btn btn-primary btn-sn" style="margin-top:10px;">Sign in</a>
+        <div class="col">    <a href="/" class="btn btn-primary btn-sn" style="margin-top:10px;">Annuler</a>
+
         </div>
         <div class="col">
-            <h1>Accueil</h1>
+            <h1>Categories</h1>
         </div>
     </div>
 
 
     <i class="fas fa-check"></i>
 
-    <h2>Votre agence de proximité</h2>
+    <h2>Les différentes catégories</h2>
+
+    <hr>
+    </hr>
+
+        {% for i in 0..c|length-1 %}
+    <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{noms[i]}}</h4>
+                    <a href="/categorie/{{ids[i]}}" class="btn btn-primary btn-sn">voir les biens</a>
+                </div>
+        </div>
+    </div>
+        {% endfor %}
+
+
 
     <hr>
     </hr>
@@ -57,30 +72,6 @@
             catégorie peut référencer plusieurs biens.
         </p>
     </div>
-
-    <hr>
-    </hr>
-
-    <div class="row">
-        {% for i in 0..2 %}
-        <div class="col">
-            <div class="card">
-                <img src="https://picsum.photos/200/300" class="img-fluid" alt="" />
-                <div class="card-body">
-                    <h4 class="card-title">Magnifique maison</h4>
-                    <p class="card-text">description du bien</p>
-                    <a href="#" class="btn btn-primary btn-sn">Détails</a>
-                    <a href="#" class="btn btn-success btn-sn">Ajouter</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-
-    <hr>
-    </hr>
-
-
 
     <hr>
     </hr>

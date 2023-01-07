@@ -101,34 +101,43 @@ class CategorieController extends AbstractController{
     }
 
     /**
-    *@Route("/categories", name="categorie")
+    *@Route("/categorie/{id}", name="categorie")
+    */
+    public function categorie($id, EntityManagerInterface $em){
+        $c = $em->getRepository(Categorie::class)->find($id);
+        
+        $titres = array();
+        $ids = array();
+        $descs = array();
+        $listBiens = $c->getBiens();
+        foreach($listBiens as $b){
+            $titres[] = $b->getTitre();
+            $ids[] = $b->getId();
+            $descs[] = $b->getDescription();
+        }
+        $cat = $c->getNom();
+
+        return $this->render('categorie/categorie.html.twig', ['titres' => $titres, 'ids' => $ids, 'descs' => $descs, 'cat' => $cat]);
+    }
+
+
+    /**
+    *@Route("/categories", name="categories")
     */
     public function categories(EntityManagerInterface $em){
         $c = $em->getRepository(Categorie::class)->findAll();
-
-        $listCat = array();
-        foreach($c as $uneCategorie){
-            $biensCat = $uneCategorie->getBiens(); // liste des biens favoris
-            $nomCat = $uneCategorie->getNom();
-            foreach($biensCat as $b){
-                # update de la liste par categorie
-                $t = $b->getTitre(); // titre du bien
-                if(!array_key_exists($nomCat, $listCat)){
-                    $biens = array($t => 1); // liste du nombre de fois que le bien apparrait dans un département
-                    $listCat[$nomCat] = $biensFav; // ajout du departement dans le tableau
-                }else{
-                    if (!array_key_exists($t, $deptBienFav[$nomCat])) {
-                        $listCat[$nomCat][$t] = 1; // liste du nombre de fois que le bien apparrait dans un département
-                    }else{
-                        $listCat[$nomCat][$t]++; // increment du nombre dans le tableau
-                    }
-                }
-            }
+        if($c == null){
+            throw new Exception("Bien non présent dans la base");
         }
 
-        return $this->render('categorie/categories.html.twig', ['categories' => $c]);
-    }
+        $cats = array();
+        foreach($c as $uneCat){
+            $noms[] = $uneCat->getNom();
+            $ids[] = $uneCat->getId();
+        }
+        return $this->render('categorie/categories.html.twig', ['noms' => $noms, 'ids' => $ids, 'c' => $c]);
 
+    }
 
 }
 ?>
