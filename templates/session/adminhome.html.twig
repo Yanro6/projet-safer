@@ -1,0 +1,92 @@
+{# Template général de la page #}
+{% extends 'base.html.twig' %}
+
+{# Titre de la page #}
+{% block title %} Admin Page Agence Alpha {% endblock %}
+
+{# Css de la page #}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/lumen/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+{% endblock %}
+
+
+{# Codes HTML et balises Twig #}
+{% block body %}
+<div class="container">
+    <div class"=row">
+        <div class="col">
+            <a href="/logout" class="btn btn-primary btn-sn" style="margin-top:10px;">Se déconnecter</a>
+        </div>
+        <div class="col">
+            <h1>Admin Page</h1>
+        </div>
+    </div>
+
+
+    <i class="fas fa-check"></i>
+
+    <h2>Bienvenue {{nom}} {{prenom}}</h2>
+
+    <hr>
+    </hr>
+
+    <div class="row">
+        {% include 'shared/_presentation.html.twig' with {
+            'color': 'white',
+            'icon': 'fa-solid fa-magnifying-glass',
+            'text': "La Société d'aménagement foncier et d'établissement rural (Safer) permet à tout porteur de projet viable - qu'il soit agricole, artisanal, de service, résidentiel ou environnemental - de s'installer en milieu rural.
+        "} %}
+    </div>
+    <hr>
+    </hr>
+    <div class="row">
+        <p>
+            Ce site propose donc un certain nombre de biens agricoles à la vente ou à la location à l'intention des
+            porteurs de projets.
+
+            Les biens proposés sont donc à la vente ou à la location. Ils possèdent une surface exprimée en m2 et
+            une
+            catégorie. Chaque bien possède un prix (vente prix final, dans le location, le prix mensuel) exprimés en
+            euros, et une localisation (ville et codepostal). Chaque bien possède également un numéro, un titre,
+            ainsi
+            qu'un descriptif.
+
+            Les catégories sont les suivantes : Terrain agricole, prairie, Bois, Bâtiments, Exploitations. Chaque
+            catégorie peut référencer plusieurs biens.
+        </p>
+    </div>
+
+    <hr>
+    </hr>
+
+    <div class="row">
+        {% for i in 0..2 %}
+        <div class="col">
+            <div class="card">
+                <img src="https://picsum.photos/200/300" class="img-fluid" alt="" />
+                <div class="card-body">
+                    <h4 class="card-title">Magnifique maison</h4>
+                    <p class="card-text">description du bien</p>
+                    <a href="#" class="btn btn-primary btn-sn">Détails</a>
+                    <a href="#" class="btn btn-success btn-sn">Ajouter</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+    </hr>
+
+    <div class="row">
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-solid fa-location-dot', 'text': 'Proximité' } %}
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-regular fa-lightbulb', 'text': 'Conseil' } %}
+        {% include 'shared/_presentation.html.twig' with { 'color': 'white', 'icon': 'fa-solid fa-signs-post', 'text': 'Choix' } %}
+    </div>
+
+    <hr>
+    </hr>
+
+</div>
+{% endblock %}

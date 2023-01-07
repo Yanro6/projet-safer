@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {# Titre de la page #}
-{% block title %} Suppr Categorie Agence Alpha {% endblock %}
+{% block title %} signin Porteur Agence Alpha {% endblock %}
 
 {# Css de la page #}
 {% block stylesheets %}
@@ -14,17 +14,24 @@
 {# Codes HTML et balises Twig #}
 {% block body %}
 <div class="container">
-    <h1>Catégorie</h1>
+    <h1>Se connecter</h1>
 
-    <h2>Supprimer une catégorie</h2>
+    <h2>Se connecter en tant que porteur de projet ou administrateur</h2>
 
     <hr>
     </hr>
 
-
     <div class="row">
         <div class="col">
-            <p>La catégorie {{nomCategorie}} a été supprimée.</p>
+            {{form_start(formView)}}
+            {% form_theme formView 'bootstrap_4_layout.html.twig' %}
+            {{form_row(formView.login)}}
+            {{form_row(formView.mot_de_passe)}}
+        </div>
+        <div class="col">
+            <p style="color:red;">Les champ suivis d'un astérisque (*) doivent obligatoirement être remplis</p>
+            <button class="btn btn-primary btn-sn" type="submit" >Se connecter</button>
+            {{form_end(formView)}}
         </div>
     </div>
 

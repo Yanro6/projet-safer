@@ -14,7 +14,16 @@
 {# Codes HTML et balises Twig #}
 {% block body %}
 <div class="container">
-    <h1>Accueil</h1>
+    <div class"=row">
+        <div class="col">
+            <a href="/singin" class="btn btn-primary btn-sn" style="margin-top:10px;">Se connecter</a>
+            <a href="/signup" class="btn btn-primary btn-sn" style="margin-top:10px;">S'inscrire en tant que porteur de projet</a>
+        </div>
+        <div class="col">
+            <h1>Accueil</h1>
+        </div>
+    </div>
+
 
     <i class="fas fa-check"></i>
 
@@ -30,16 +39,18 @@
             'text': "La Société d'aménagement foncier et d'établissement rural (Safer) permet à tout porteur de projet viable - qu'il soit agricole, artisanal, de service, résidentiel ou environnemental - de s'installer en milieu rural.
         "} %}
     </div>
-        <hr>
-        </hr>
+    <hr>
+    </hr>
     <div class="row">
         <p>
             Ce site propose donc un certain nombre de biens agricoles à la vente ou à la location à l'intention des
             porteurs de projets.
 
-            Les biens proposés sont donc à la vente ou à la location. Ils possèdent une surface exprimée en m2 et une
+            Les biens proposés sont donc à la vente ou à la location. Ils possèdent une surface exprimée en m2 et
+            une
             catégorie. Chaque bien possède un prix (vente prix final, dans le location, le prix mensuel) exprimés en
-            euros, et une localisation (ville et codepostal). Chaque bien possède également un numéro, un titre, ainsi
+            euros, et une localisation (ville et codepostal). Chaque bien possède également un numéro, un titre,
+            ainsi
             qu'un descriptif.
 
             Les catégories sont les suivantes : Terrain agricole, prairie, Bois, Bâtiments, Exploitations. Chaque
