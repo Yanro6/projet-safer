@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {# Titre de la page #}
-{% block title %} Suppr Bien Agence Alpha {% endblock %}
+{% block title %} Reset Porteur Agence Alpha {% endblock %}
 
 {# Css de la page #}
 {% block stylesheets %}
@@ -16,16 +16,23 @@
 <div class="container">
     <a href="/" class="btn btn-primary btn-sn" style="margin-top:10px;">Annuler</a>
 
-    <h1>Bien</h1>
+    <h1>Réinitialiser son mot de passe</h1>
 
-    <h2>Supprimer un bien</h2>
+    <h2>Réinitialiser son mot de passe</h2>
 
     <hr>
     </hr>
 
     <div class="row">
         <div class="col">
-            <p>Le bien {{titreBien}} a été supprimé.</p>
+            {{form_start(formView)}}
+            {% form_theme formView 'bootstrap_4_layout.html.twig' %}
+            {{form_row(formView.mot_de_passe)}}
+        </div>
+        <div class="col">
+            <p style="color:red;">Les champ suivis d'un astérisque (*) doivent obligatoirement être remplis</p>
+            <button class="btn btn-primary btn-sn" type="submit">Réinitialiser le mot de passe</button>
+            {{form_end(formView)}}
         </div>
     </div>
 

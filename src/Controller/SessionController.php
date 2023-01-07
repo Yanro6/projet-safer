@@ -6,6 +6,8 @@ use App\Entity\Porteur;
 use App\Repository\AdministrateurRepository;
 use App\Repository\PorteurRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+use Exception;
 use SessionIdInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -131,8 +133,8 @@ class SessionController extends AbstractController
                     return $this->render('session/home.html.twig', ['nom' => $session->get('nom'), 'prenom' => $session->get('prenom')]);
                 }
             }
+            $session->getFlashBag()->add('error', 'Le login ou l\'email, ou le mot de passe n\'est pas valide');
         }
-
         return $this->render('session/signin.html.twig', ['formView' => $formView]);
         
     }
@@ -143,8 +145,71 @@ class SessionController extends AbstractController
      */
     public function logout(SessionInterface $session){
         $session->clear();
-        return $this->redirectToRoute('signin');    }
+        return $this->redirectToRoute('signin');    
+    }
 
+    /**
+     *@Route("/resetmdp", name="resetmdp")
+     */
+    public function resetmdp(PorteurRepository $pr,Request $request, SessionInterface $session,  FormFactoryInterface $factory){
+
+        $builder=$factory->createBuilder(FormType::class, null , ['data_class' => Porteur::class]);
+        $builder->setMethod('GET');
+
+        $form=$builder->getForm();
+        $form->add('email', TextType::class, ['required' => true, 'label' => 'Email *', 'attr' => ['class' => 'formcontrol', 'placeholder' => 'Tapez un email pour réinitialiser le mot de passe']]);
+
+        $formView=$form->createView();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()){
+            $data = $form->getData();
+            $email = $data->getEmail();
+            $p = $pr->findBy(['email' => $email]);
+            if($p == null){
+                throw new Exception("Email non présent dans la base");
+            }
+            $id = $p[0]->getId();
+            return $this->redirectToRoute("reset", ['id' => $id]);
+        }
+
+        return $this->render('session/resetmdp.html.twig', ['formView' => $formView]);
+    }
+
+        /**
+     *@Route("/reset/{id}", name="reset", methods={"GET", "POST"})
+     */
+    public function reset($id, EntityManagerInterface $em, Request $request, SessionInterface $session, FormFactoryInterface $factory)
+    {
+
+        $p = $em->getRepository(Porteur::class)->find($id);
+
+        $builder = $factory->createBuilder(FormType::class, null, ['data_class' => Porteur::class]);
+        $builder->setMethod('GET');
+
+        $form = $builder->getForm();
+        $form->add('mot_de_passe', PasswordType::class, ['required' => true, 'label' => 'Mot de passe *', 'attr' => ['class' => 'formcontrol', 'placeholder' => 'Tapez un nouveau mot de passe']]);
+
+        $formView = $form->createView();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
+
+            $p->setMotDePasse($data->getMotDePasse());
+            ;
+
+            $em->persist($p);
+
+            $em->flush(); #flush peut être associé à plusieurs persist. Permettant de répercuter plusieurs mises à jour de la BDD en une seule fois.
+            return $this->redirectToRoute('signin');
+        }
+
+        return $this->render('session/reset.html.twig', ['formView' => $formView]);
+
+    }
 
 }
 ?>

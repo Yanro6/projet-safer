@@ -100,5 +100,35 @@ class CategorieController extends AbstractController{
         return $this->render('categorie/suppr.html.twig', [ 'nomCategorie'=>$nomCategorie ]);
     }
 
+    /**
+    *@Route("/categories", name="categorie")
+    */
+    public function categories(EntityManagerInterface $em){
+        $c = $em->getRepository(Categorie::class)->findAll();
+
+        $listCat = array();
+        foreach($c as $uneCategorie){
+            $biensCat = $uneCategorie->getBiens(); // liste des biens favoris
+            $nomCat = $uneCategorie->getNom();
+            foreach($biensCat as $b){
+                # update de la liste par categorie
+                $t = $b->getTitre(); // titre du bien
+                if(!array_key_exists($nomCat, $listCat)){
+                    $biens = array($t => 1); // liste du nombre de fois que le bien apparrait dans un département
+                    $listCat[$nomCat] = $biensFav; // ajout du departement dans le tableau
+                }else{
+                    if (!array_key_exists($t, $deptBienFav[$nomCat])) {
+                        $listCat[$nomCat][$t] = 1; // liste du nombre de fois que le bien apparrait dans un département
+                    }else{
+                        $listCat[$nomCat][$t]++; // increment du nombre dans le tableau
+                    }
+                }
+            }
+        }
+
+        return $this->render('categorie/categories.html.twig', ['categories' => $c]);
+    }
+
+
 }
 ?>
