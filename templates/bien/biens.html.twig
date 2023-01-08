@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {# Titre de la page #}
-{% block title %} Accueil Agence Alpha {% endblock %}
+{% block title %} Biens Agence Alpha {% endblock %}
 
 {# Css de la page #}
 {% block stylesheets %}
@@ -16,18 +16,34 @@
 <div class="container">
     <div class"=row">
         <div class="col">
-            <a href="/signin" class="btn btn-primary btn-sn" style="margin-top:10px;">Se connecter</a>
-            <a href="/signup" class="btn btn-primary btn-sn" style="margin-top:10px;">S'inscrire en tant que porteur de projet</a>
+        <a href="/signin" class="btn btn-primary btn-sn" style="margin-top:10px;">Annuler</a>
         </div>
         <div class="col">
-            <h1>Accueil</h1>
+            <h1>Biens</h1>
         </div>
     </div>
 
 
     <i class="fas fa-check"></i>
 
-    <h2>Votre agence de proximité</h2>
+    <h2>Vos favoris</h2>
+
+    <hr>
+    </hr>
+
+        {% for i in 0..titres|length-1 %}
+    <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{titres[i]}}</h4>
+                    <p class="card-text">{{descs[i]}}</p>
+                    <a href="bien/{{ids[i]}}" class="btn btn-primary btn-sn">Détails</a>
+                </div>
+        </div>
+    </div>
+        {% endfor %}
+
+
 
     <hr>
     </hr>
@@ -56,25 +72,6 @@
             Les catégories sont les suivantes : Terrain agricole, prairie, Bois, Bâtiments, Exploitations. Chaque
             catégorie peut référencer plusieurs biens.
         </p>
-    </div>
-
-    <hr>
-    </hr>
-
-    <div class="row">
-        {% for i in 0..2 %}
-        <div class="col">
-            <div class="card">
-                <img src="https://picsum.photos/200/300" class="img-fluid" alt="" />
-                <div class="card-body">
-                    <h4 class="card-title">Magnifique maison</h4>
-                    <p class="card-text">description du bien</p>
-                    <a href="signin" class="btn btn-primary btn-sn">Détails</a>
-                    <a href="signin" class="btn btn-success btn-sn">Ajouter</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
     </div>
 
     <hr>

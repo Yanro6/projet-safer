@@ -5,11 +5,12 @@ namespace App\Controller;
 use App\Repository\CategorieRepository;
 use App\Entity\Categorie;
 use App\Entity\Bien;
+use App\Entity\Porteur;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -67,9 +68,40 @@ class BienController extends AbstractController{
         
     }
 
+    /**
+    *@Route("/bien/modificationbien", name="modificationbien", methods={"GET", "POST"})
+    */
+    public function modificationbien(Request $request, EntityManagerInterface $em, FormFactoryInterface $factory){
+
+        $builder=$factory->createBuilder(FormType::class, null, ['data_class' => Bien::class] );
+        $builder->setMethod('GET');
+
+        $form=$builder->getForm();
+        $form->add('titre', TextType::class, ['required' => false, 'label' => 'Titre du bien *', 'attr' => ['class' => 'formcontrol']]);
+
+
+        $formView=$form->createView();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
+            $titre = $data->getTitre(); 
+            $b = $em->getRepository(Bien::class)->findBy(['titre'=>$titre]);
+            if($b == null){
+                return $this->render('error.html.twig');
+            }
+            $id = $b[0]->getId();
+
+            return $this->redirectToRoute('modifbien', ['id'=>$id]);
+        }
+
+        return $this->render('bien/modification.html.twig', ['formView'=>$formView]);
+    }
+
 
     /**
-    *@Route("/bien/modif/{id}", name="modifBien", methods={"GET", "POST"})
+    *@Route("/bien/modif/{id}", name="modifbien", methods={"GET", "POST"})
     */
     public function modif($id, EntityManagerInterface $em, Request $request, FormFactoryInterface $factory, CategorieRepository $cr): Response
     {
@@ -117,13 +149,45 @@ class BienController extends AbstractController{
         
     }
 
+
+    /**
+    *@Route("/bien/suppressionbien", name="suppressionbien", methods={"GET", "POST"})
+    */
+    public function suppressionbien(Request $request, EntityManagerInterface $em, FormFactoryInterface $factory){
+
+        $builder=$factory->createBuilder(FormType::class, null, ['data_class' => Bien::class] );
+        $builder->setMethod('GET');
+
+        $form=$builder->getForm();
+        $form->add('titre', TextType::class, ['required' => false, 'label' => 'Titre du bien *', 'attr' => ['class' => 'formcontrol']]);
+
+
+        $formView=$form->createView();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
+            $titre = $data->getTitre();
+            $b = $em->getRepository(Bien::class)->findBy(['titre'=>$titre]);
+            if($b == null){
+                return $this->render('error.html.twig');
+            }
+            $id = $b[0]->getId();
+
+            return $this->redirectToRoute('supprBien', ['id'=>$id]);
+        }
+
+        return $this->render('bien/suppression.html.twig', ['formView'=>$formView]);
+    }
+
     /**
     *@Route("/bien/suppr/{id}", name="supprBien", methods={"GET", "POST"})
     */
     public function suppr($id, EntityManagerInterface $em){
         $b = $em->getRepository(Bien::class)->find($id);
         if($b == null){
-            throw new Exception("Bien non présent dans la base");
+            return $this->render('error.html.twig');
         }
         $titreBien = $b->getTitre();
         $em->remove($b);
@@ -132,5 +196,57 @@ class BienController extends AbstractController{
         return $this->render('bien/suppr.html.twig', [ 'titreBien'=>$titreBien ]);
     }
 
+    /**
+    *@Route("/bien/{id}", name="bien", methods={"GET", "POST"})
+    */
+    public function bien($id, EntityManagerInterface $em){
+        $b = $em->getRepository(Bien::class)->find($id);
+        if($b == null){
+            return $this->render('error.html.twig');
+        }
+        $titreBien = $b->getTitre();
+        $prixbien = $b->getPrix();
+        $urlBien = $b->getUrl();
+        $cpBien = $b->getCp();
+        $catbien = $b->getCategorie();
+        $surfaceBien = $b->getSurface();
+        $locBien = $b->getLocalisation();
+        $descbien = $b->getDescription();
+
+        return $this->render('bien/bien.html.twig', [ 't'=>$titreBien, 'p'=>$prixbien, 'u'=>$urlBien , 'cp'=>$cpBien , 'cat'=>$catbien->getNom() , 's'=>$surfaceBien , 'l'=>$locBien , 'd'=>$descbien ]);
+    }
+
+    
+    /**
+    *@Route("/favoris/{id}", name="favoris", methods={"GET", "POST"})
+    */
+    public function favoris($id, SessionInterface $session, EntityManagerInterface $em){
+        $idPorteur = $session->get('id');
+        $p = $em->getRepository(Porteur::class)->find($idPorteur);
+        $b = $em->getRepository(Bien::class)->find($id);
+        $p->addBien($b);
+        $b->addPorteur($p);
+        $em->persist($p);
+        $em->persist($b);
+        $em->flush();
+        return $this->redirectToRoute('categories');
+    }
+
+    /**
+    *@Route("/biensfavoris", name="biensfavoris", methods={"GET", "POST"})
+    */
+    public function biensfavoris(SessionInterface $session, EntityManagerInterface $em)
+    {
+        $idPorteur = $session->get('id');
+        $p = $em->getRepository(Porteur::class)->find($idPorteur);
+        $favs = $p->getBiens();
+        foreach ($favs as $b) {
+            $titres[] = $b->getTitre();
+            $ids[] = $b->getId();
+            $descs[] = $b->getDescription();
+        }
+    return $this->render('/bien/biens.html.twig', ['titres' => $titres, 'ids' => $ids, 'descs' => $descs, ['favs'=>$favs]]);
+    }
+    
 }
 ?>

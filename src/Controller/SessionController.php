@@ -120,17 +120,26 @@ class SessionController extends AbstractController
             $admins = $ar->findAll();
             foreach ($admins as $a) {
                 if ($data['login'] == $a->getLogin() && $data['mot_de_passe'] == $a->getMotDePasse()) {
+                    $session->start();
                     $session->set('nom', $a->getNom());
+                    $session->set('login', $a->getLogin());
                     $session->set('prenom', $a->getPrenom());
-                    return $this->render('session/adminhome.html.twig', ['nom' => $session->get('nom'), 'prenom' => $session->get('prenom')]);
+                    $session->set('eamil', $a->getEmail());
+                    $session->set('mot_de_passe', $a->getMotDePasse());
+                    $session->set('id', $a->getId());
+                    return $this->render('session/adminhome.html.twig');
                 }
             }
             $porteurs = $pr->findAll();
             foreach ($porteurs as $p) {
                 if ($data['login'] == $p->getEmail() && $data['mot_de_passe'] == $p->getMotDePasse()) {
+                    $session->start();
                     $session->set('nom', $p->getNom());
                     $session->set('prenom', $p->getPrenom());
-                    return $this->render('session/home.html.twig', ['nom' => $session->get('nom'), 'prenom' => $session->get('prenom')]);
+                    $session->set('eamil', $p->getEmail());
+                    $session->set('mot_de_passe', $p->getMotDePasse());
+                    $session->set('id', $p->getId());
+                    return $this->render('session/home.html.twig');
                 }
             }
             $session->getFlashBag()->add('error', 'Le login ou l\'email, ou le mot de passe n\'est pas valide');
@@ -144,7 +153,11 @@ class SessionController extends AbstractController
      *@Route("/logout", name="logout")
      */
     public function logout(SessionInterface $session){
+        $session->remove('nom');
+        $session->remove('prenom');
+        $session->remove('id');
         $session->clear();
+
         return $this->redirectToRoute('signin');    
     }
 
@@ -168,7 +181,7 @@ class SessionController extends AbstractController
             $email = $data->getEmail();
             $p = $pr->findBy(['email' => $email]);
             if($p == null){
-                throw new Exception("Email non présent dans la base");
+                return $this->render('error.html.twig');
             }
             $id = $p[0]->getId();
             return $this->redirectToRoute("reset", ['id' => $id]);

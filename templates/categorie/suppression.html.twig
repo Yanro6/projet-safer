@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {# Titre de la page #}
-{% block title %} signin Porteur Agence Alpha {% endblock %}
+{% block title %} Suppr Categorie Agence Alpha {% endblock %}
 
 {# Css de la page #}
 {% block stylesheets %}
@@ -14,13 +14,11 @@
 {# Codes HTML et balises Twig #}
 {% block body %}
 <div class="container">
-    <a href="/" class="btn btn-primary btn-sn" style="margin-top:10px;">Annuler</a>
-    <a href="/signup" class="btn btn-primary btn-sn" style="margin-top:10px;">S'inscrire en tant que porteur de projet</a>
+    <a href="/signin?form%5Blogin%5D=admin&form%5Bmot_de_passe%5D=admin" class="btn btn-primary btn-sn" style="margin-top:10px;">Annuler</a>
 
+    <h1>Categorie</h1>
 
-    <h1>Se connecter</h1>
-
-    <h2>Se connecter en tant que porteur de projet ou administrateur</h2>
+    <h2>Supprimer une categorie</h2>
 
     <hr>
     </hr>
@@ -29,33 +27,11 @@
         <div class="col">
             {{form_start(formView)}}
             {% form_theme formView 'bootstrap_4_layout.html.twig' %}
-            {{form_row(formView.login)}}
-            {{form_row(formView.mot_de_passe)}}
-        </div>
-        <div class="col">
+            {{form_row(formView.nom)}}
             <p style="color:red;">Les champ suivis d'un astérisque (*) doivent obligatoirement être remplis</p>
-            <button class="btn btn-primary btn-sn" type="submit">Se connecter</button>
+            <button class="btn btn-primary btn-sn" type="submit"> Supprimer la catégorie </button>
             {{form_end(formView)}}
         </div>
-    </div>
-
-    <hr>
-    </hr>
-
-    <div class="row">
-        {# Afficher les messages d'erreur #}
-        {% for message in app.flashes('error') %}
-        <div class="col">
-            <div class="alert alert-error">
-                <p style="color:red">
-                    {{ message }}
-                </p>
-            </div>
-        </div>
-        <div class="col">
-            <a class="btn btn-primary btn-sn" class="button" href="/resetmdp" >Réinitialiser son mot de passe</a>
-        </div>
-        {% endfor %}
     </div>
 
     <hr>

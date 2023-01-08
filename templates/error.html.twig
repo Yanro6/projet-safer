@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {# Titre de la page #}
-{% block title %} Modify Bien Agence Alpha {% endblock %}
+{% block title %} Erreur Agence Alpha {% endblock %}
 
 {# Css de la page #}
 {% block stylesheets %}
@@ -14,34 +14,22 @@
 {# Codes HTML et balises Twig #}
 {% block body %}
 <div class="container">
-    <a href="/signin?form%5Blogin%5D=admin&form%5Bmot_de_passe%5D=admin" class="btn btn-primary btn-sn" style="margin-top:10px;">Annuler</a>
-
-    <h1>Bien</h1>
-
-    <h2>Modifier un bien</h2>
-
-    <hr>
-    </hr>
-
-    <div class="row">
+    <div class"=row">
         <div class="col">
-            {{form_start(formView)}}
-            {% form_theme formView 'bootstrap_4_layout.html.twig' %}
-            {{form_row(formView.titre)}}
-            {{form_row(formView.prix)}}
-            {{form_row(formView.cp)}}
-            {{form_row(formView.categorie)}}
-            {{form_row(formView.surface)}}
+            <a href="/signin" class="btn btn-primary btn-sn" style="margin-top:10px;">Se connecter</a>
+            <a href="/signup" class="btn btn-primary btn-sn" style="margin-top:10px;">S'inscrire en tant que porteur de projet</a>
         </div>
         <div class="col">
-            {{form_row(formView.localisation)}}
-            {{form_row(formView.url)}}
-            {{form_row(formView.description)}}
-            <p style="color:red;">Les champ suivis d'un astérisque (*) doivent obligatoirement être remplis</p>
-            <button class="btn btn-primary btn-sn" type="submit"> Modifier le bien </button>
-            {{form_end(formView)}}
+            <h1>Erreur</h1>
         </div>
     </div>
+
+
+    <i class="fas fa-check"></i>
+
+    <h2>Objet non trouvé dans la base de donnée</h2>
+
+
 
     <hr>
     </hr>

@@ -6,7 +6,6 @@ use App\Repository\CategorieRepository;
 use App\Entity\Categorie;
 use App\Entity\Bien;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,6 +51,36 @@ class CategorieController extends AbstractController{
         
     }
 
+    /**
+    *@Route("/categorie/modificationcategorie", name="modificationcategorie", methods={"GET", "POST"})
+    */
+    public function modificationcategorie(Request $request, EntityManagerInterface $em, FormFactoryInterface $factory){
+
+        $builder=$factory->createBuilder(FormType::class, null, ['data_class' => categorie::class] );
+        $builder->setMethod('GET');
+
+        $form=$builder->getForm();
+        $form->add('nom', TextType::class, ['required' => false, 'label' => 'Nom de la catégorie * ', 'attr' => ['class' => 'formcontrol']]);
+
+
+        $formView=$form->createView();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
+            $nom = $data->getNom();
+            $c = $em->getRepository(Categorie::class)->findBy(['nom'=>$nom]);
+            if($c == null){
+                return $this->render('error.html.twig');
+            }
+            $id = $c[0]->getId();
+
+            return $this->redirectToRoute('modifCategorie', ['id'=>$id]);
+        }
+
+        return $this->render('categorie/modification.html.twig', ['formView'=>$formView]);
+    }
 
     /**
     *@Route("/categorie/modif/{id}", name="modifCategorie", methods={"GET", "POST"})
@@ -85,13 +114,45 @@ class CategorieController extends AbstractController{
         
     }
 
+
+    /**
+    *@Route("/categorie/suppressioncategorie", name="suppressioncategorie", methods={"GET", "POST"})
+    */
+    public function suppressioncategorie(Request $request, EntityManagerInterface $em, FormFactoryInterface $factory){
+
+        $builder=$factory->createBuilder(FormType::class, null, ['data_class' => categorie::class] );
+        $builder->setMethod('GET');
+
+        $form=$builder->getForm();
+        $form->add('nom', TextType::class, ['required' => false, 'label' => 'Nom de la catégorie * ', 'attr' => ['class' => 'formcontrol']]);
+
+
+        $formView=$form->createView();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
+            $nom = $data->getNom();
+            $c = $em->getRepository(Categorie::class)->findBy(['nom'=>$nom]);
+            if($c == null){
+                return $this->render('error.html.twig');
+            }
+            $id = $c[0]->getId();
+
+            return $this->redirectToRoute('supprCategorie', ['id'=>$id]);
+        }
+
+        return $this->render('categorie/suppression.html.twig', ['formView'=>$formView]);
+    }
+
     /**
     *@Route("/categorie/suppr/{id}", name="supprCategorie", methods={"GET", "POST"})
     */
     public function suppr($id, EntityManagerInterface $em){
         $c = $em->getRepository(Categorie::class)->find($id);
         if($c == null){
-            throw new Exception("Bien non présent dans la base");
+            return $this->render('error.html.twig');
         }
         $nomCategorie = $c->getNom();
         $em->remove($c);
@@ -110,6 +171,9 @@ class CategorieController extends AbstractController{
         $ids = array();
         $descs = array();
         $listBiens = $c->getBiens();
+        if($listBiens->isEmpty()){
+            return $this->render('error.html.twig');
+        }
         foreach($listBiens as $b){
             $titres[] = $b->getTitre();
             $ids[] = $b->getId();
@@ -127,7 +191,7 @@ class CategorieController extends AbstractController{
     public function categories(EntityManagerInterface $em){
         $c = $em->getRepository(Categorie::class)->findAll();
         if($c == null){
-            throw new Exception("Bien non présent dans la base");
+            return $this->render('error.html.twig');
         }
 
         $cats = array();
