@@ -89,6 +89,9 @@ class SessionController extends AbstractController
             
             $session->set('nom', $p->getNom());
             $session->set('prenom', $p->getPrenom());
+            $session->set('email', $p->getEmail());
+            $session->set('mot_de_passe', $p->getMotDePasse());
+            $session->set('id', $p->getId());
 
             return $this->render('session/home.html.twig', ['nom' => $session->get('nom'), 'prenom' => $session->get('prenom')]);
 
@@ -121,10 +124,11 @@ class SessionController extends AbstractController
             foreach ($admins as $a) {
                 if ($data['login'] == $a->getLogin() && $data['mot_de_passe'] == $a->getMotDePasse()) {
                     $session->start();
+                    $session->clear();
                     $session->set('nom', $a->getNom());
                     $session->set('login', $a->getLogin());
                     $session->set('prenom', $a->getPrenom());
-                    $session->set('eamil', $a->getEmail());
+                    $session->set('email', $a->getEmail());
                     $session->set('mot_de_passe', $a->getMotDePasse());
                     $session->set('id', $a->getId());
                     return $this->render('session/adminhome.html.twig');
@@ -134,9 +138,10 @@ class SessionController extends AbstractController
             foreach ($porteurs as $p) {
                 if ($data['login'] == $p->getEmail() && $data['mot_de_passe'] == $p->getMotDePasse()) {
                     $session->start();
+                    $session->clear();
                     $session->set('nom', $p->getNom());
                     $session->set('prenom', $p->getPrenom());
-                    $session->set('eamil', $p->getEmail());
+                    $session->set('email', $p->getEmail());
                     $session->set('mot_de_passe', $p->getMotDePasse());
                     $session->set('id', $p->getId());
                     return $this->render('session/home.html.twig');
@@ -155,6 +160,9 @@ class SessionController extends AbstractController
     public function logout(SessionInterface $session){
         $session->remove('nom');
         $session->remove('prenom');
+        $session->remove('email');
+        $session->remove('login');
+        $session->remove('mot_de_passe');
         $session->remove('id');
         $session->clear();
 

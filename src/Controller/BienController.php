@@ -212,8 +212,9 @@ class BienController extends AbstractController{
         $surfaceBien = $b->getSurface();
         $locBien = $b->getLocalisation();
         $descbien = $b->getDescription();
+        $id = $b->getId();
 
-        return $this->render('bien/bien.html.twig', [ 't'=>$titreBien, 'p'=>$prixbien, 'u'=>$urlBien , 'cp'=>$cpBien , 'cat'=>$catbien->getNom() , 's'=>$surfaceBien , 'l'=>$locBien , 'd'=>$descbien ]);
+        return $this->render('bien/bien.html.twig', [ 't'=>$titreBien, 'p'=>$prixbien, 'u'=>$urlBien , 'cp'=>$cpBien , 'cat'=>$catbien->getNom() , 's'=>$surfaceBien , 'l'=>$locBien , 'd'=>$descbien , 'id'=>$id]);
     }
 
     
@@ -240,6 +241,9 @@ class BienController extends AbstractController{
         $idPorteur = $session->get('id');
         $p = $em->getRepository(Porteur::class)->find($idPorteur);
         $favs = $p->getBiens();
+        $titres=array();
+        $ids=array();
+        $descs=array();
         foreach ($favs as $b) {
             $titres[] = $b->getTitre();
             $ids[] = $b->getId();

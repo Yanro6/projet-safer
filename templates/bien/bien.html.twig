@@ -35,22 +35,27 @@
     <div class="row">
         <div class="card">
             <div class="card-body">
-                <img src="{{u}}" >
+                <img src="{{u}}">
             </div>
         </div>
         <div class="card">
             <div class="card-body">
                 <p class="card-text">Titre : {{t}}</p>
-                <p class="card-text">Prix : {{p}}</p>
+                <p class="card-text">Prix en €: {{p}}</p>
                 <p class="card-text">Code postal : {{cp}}</p>
             </div>
         </div>
         <div class="card">
             <div class="card-body">
                 <p class="card-text">Catégorie : {{cat}}</p>
-                <p class="card-text">Surface : {{s}}</p>
+                <p class="card-text">Surface en km² : {{s}}</p>
                 <p class="card-text">Localisation : {{l}}</p>
                 <p class="card-text">Description : {{d}}</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <a href="/favoris/{{id}}" class="btn btn-success btn-sn">Ajouter en favoris</a>
             </div>
         </div>
     </div>
